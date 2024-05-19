@@ -7,11 +7,34 @@ from .models import Profile, Post
 
 # Create your views here.
 
+#@login_required(login_url='signin')
+# def index(request):
+#     user_object = User.objects.get(username=request.user)
+#     user_profile = Profile.objects.get(user=user_object)
+    
+#     posts = Post.objects.all()
+#     return render(request , 'index.html', {'user_profile': user_profile, 'posts': posts})    
+
 @login_required(login_url='signin')
 def index(request):
     user_object = User.objects.get(username=request.user)
     user_profile = Profile.objects.get(user=user_object)
-    return render(request , 'index.html', {'user_profile': user_profile})    
+    
+    # Get all posts
+    posts = Post.objects.all()
+    
+    # Create a list of dictionaries with posts and their associated user profiles
+    posts_with_profiles = []
+    for post in posts:
+        user_profile = Profile.objects.get(user__username=post.user)
+        posts_with_profiles.append({
+            'post': post,
+            'profile': user_profile
+        })
+    print(posts_with_profiles)
+    return render(request, 'index.html', {'user_profile': user_profile, 'posts_with_profiles': posts_with_profiles})
+
+
 
 @login_required(login_url='signin')
 def upload(request):
