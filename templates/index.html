@@ -267,12 +267,12 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
                                                 <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
                                             </svg>
-                                            {% if item.post.no_of_likes == 0 %}
+                                            {% if post.no_of_likes == 0 %}
                                             <p>No likes</p>
                                             {% elif post.no_of_likes == 1 %}
-                                            <p>Liked by {{item.post.no_of_likes}} person</p>
+                                            <p>Liked by {{post.no_of_likes}} person</p>
                                             {% else %}
-                                            <p>Liked by {{item.post.no_of_likes}} people</p>
+                                            <p>Liked by {{post.no_of_likes}} people</p>
                                             {% endif %}
                                         </div>
                                         
@@ -353,61 +353,25 @@
 
                             <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
                                 <h2 class="font-semibold text-lg">Users You Can Follow</h2>
-                                <a href="#"> Refresh</a>
+                                <!-- <a href="#"> Refresh</a> -->
                             </div>
                            
                             <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
-                                <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> tomi_ml </span>
-                                            <span class="block capitalize text-sm"> 320k followers </span>
-                                        </div>
-                                    </div>
-                                    
-                                    <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-                                </div>
-                                <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> taiye </span>
-                                            <span class="block capitalize text-sm"> New user </span>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-                                </div>
-                                <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-5.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> kayode </span>
-                                            <span class="block capitalize text-sm"> 20.7k followers </span>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-                                </div>
-                                <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-7.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> faith_do </span>
-                                            <span class="block capitalize text-sm"> 100.5k followers </span>
-                                        </div>
-                                    </div>
-                                    
-                                    <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-                                </div>
 
+                                {% for suggestion in suggestions_username_profile_list %}
+                                <div class="flex items-center justify-between py-3">
+                                    <div class="flex flex-1 items-center space-x-4">
+                                        <a href="profile/{{suggestion.user}}">
+                                            <img src="{{ suggestion.profileimg.url }}" class="bg-gray-200 rounded-full w-10 h-10">
+                                        </a>
+                                        <div class="flex flex-col">
+                                            <span class="block capitalize font-semibold"> {{suggestion.user}} </span>
+                                            <span class="block capitalize text-sm"> {{suggestion.bio}} </span>
+                                        </div>
+                                    </div>
+                                    <a href="/profile/{{suggestion.user}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> View User </a>
+                                </div>
+                                {% endfor %}
                             </div>
 
                         </div>
