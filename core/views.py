@@ -4,21 +4,38 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, LikePost, FollowersCount
+from itertools import chain
 
 # Create your views here.
-
-#@login_required(login_url='signin')
-# def index(request):
-#     user_object = User.objects.get(username=request.user)
-#     user_profile = Profile.objects.get(user=user_object)
-    
-#     posts = Post.objects.all()
-#     return render(request , 'index.html', {'user_profile': user_profile, 'posts': posts})    
 
 @login_required(login_url='signin')
 def index(request):
     user_object = User.objects.get(username=request.user)
     user_profile = Profile.objects.get(user=user_object)
+    
+    user_following_list = []
+    feed = []
+    
+    user_following = FollowersCount.objects.filter(follower=request.user.username)
+
+    for users in user_following:
+        user_following_list.append(users.user)
+
+    for usernames in user_following_list:
+        feed_lists = Post.objects.filter(user=usernames)
+        feed.append(feed_lists)
+        
+    feed_list = list(chain(*feed))
+    
+    posts = Post.objects.all()
+    return render(request , 'index.html', {'user_profile': user_profile, 'posts': feed_list})    
+
+# @login_required(login_url='signin')
+# def index(request):
+    user_object = User.objects.get(username=request.user)
+    user_profile = Profile.objects.get(user=user_object)
+    
+
     
     # Get all posts
     posts = Post.objects.all()
@@ -30,9 +47,10 @@ def index(request):
         posts_with_profiles.append({
             'post': post,
             'profile': user_profile
+            
         })
-    print(posts_with_profiles)
-    return render(request, 'index.html', {'user_profile': user_profile, 'posts_with_profiles': posts_with_profiles})
+    print(posts_with_profiles) 
+    return render(request, 'test.html', {'user_profile': user_profile, 'posts_with_profiles': posts_with_profiles })
 
 @login_required(login_url='signin')
 def upload(request):
